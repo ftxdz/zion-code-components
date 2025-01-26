@@ -1,6 +1,6 @@
 {
   "name": "zion-code-components",
-  "version": "0.0.2",
+  "version": "1.0.23",
   "type": "module",
   "scripts": {
     "dev": "vite",

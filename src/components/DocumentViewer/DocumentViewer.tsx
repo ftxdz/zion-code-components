@@ -19,6 +19,15 @@ export interface DocumentViewerProps {
 }
 
 export function DocumentViewer({ propData }: DocumentViewerProps) {
+  // 配置 marked 选项
+  marked.use({
+    renderer: {
+      link(this: typeof marked.Renderer.prototype, { href, text }: { href: string; title?: string | null; text: string }) {
+        return `<a href="${href}" target="_blank" rel="noopener noreferrer">${text}</a>`;
+      }
+    }
+  });
+
   const htmlContent = marked(propData.content);
   
   const customStyle = {
