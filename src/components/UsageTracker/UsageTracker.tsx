@@ -21,9 +21,31 @@ const STORAGE_KEY = 'usage_counter';
 const DATE_KEY = 'usage_date';
 
 export function UsageTracker({ propData, propState }: UsageTrackerProps) {
+  // Cookie 操作的工具函数
+  const CookieUtil = {
+    set(name: string, value: string, days: number = 1) {
+      const date = new Date();
+      date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+      const expires = `expires=${date.toUTCString()}`;
+      document.cookie = `${name}=${value};${expires};path=/`;
+    },
+
+    get(name: string): string | null {
+      const cookieName = `${name}=`;
+      const cookies = document.cookie.split(';');
+      for (let cookie of cookies) {
+        cookie = cookie.trim();
+        if (cookie.indexOf(cookieName) === 0) {
+          return cookie.substring(cookieName.length, cookie.length);
+        }
+      }
+      return null;
+    }
+  };
+
   // 获取初始值
   const getInitialValue = () => {
-    const savedDate = localStorage.getItem(DATE_KEY);
+    const savedDate = CookieUtil.get(DATE_KEY);
     const currentDate = new Date().toDateString();
     
     console.log("初始化检查：", {
@@ -31,29 +53,29 @@ export function UsageTracker({ propData, propState }: UsageTrackerProps) {
       currentDate,
       isNull: !savedDate,
       isNotToday: savedDate !== currentDate,
-      currentStorage: localStorage.getItem(STORAGE_KEY)
+      currentStorage: CookieUtil.get(STORAGE_KEY)
     });
 
     // 如果没有保存日期，初始化为今天
     if (!savedDate) {
       console.log("初始化日期");
       // 初始化日期
-      localStorage.setItem(DATE_KEY, currentDate);
+      CookieUtil.set(DATE_KEY, currentDate);
       // 初始化计数
-      localStorage.setItem(STORAGE_KEY, '0');
+      CookieUtil.set(STORAGE_KEY, '0');
       return 0;
     }
     
     if (savedDate !== currentDate) {
       console.log("不是今天");
       // 重置日期
-      localStorage.setItem(DATE_KEY, currentDate);
+      CookieUtil.set(DATE_KEY, currentDate);
       // 重置计数
-      localStorage.setItem(STORAGE_KEY, '0');
+      CookieUtil.set(STORAGE_KEY, '0');
       return 0;
     }
     
-    const currentUsage = parseInt(localStorage.getItem(STORAGE_KEY) || '0');
+    const currentUsage = parseInt(CookieUtil.get(STORAGE_KEY) || '0');
     console.log("返回当前使用次数：", currentUsage);
     return currentUsage;
   };
@@ -61,10 +83,10 @@ export function UsageTracker({ propData, propState }: UsageTrackerProps) {
   // 使用 useMemo 来缓存初始值，但确保在组件挂载时就执行
   const initialValue = useMemo(() => {
     const value = getInitialValue();
-    // 确保初始化后立即更新 localStorage
-    if (!localStorage.getItem(DATE_KEY)) {
-      localStorage.setItem(DATE_KEY, new Date().toDateString());
-      localStorage.setItem(STORAGE_KEY, '0');
+    // 确保初始化后立即更新 cookie
+    if (!CookieUtil.get(DATE_KEY)) {
+      CookieUtil.set(DATE_KEY, new Date().toDateString());
+      CookieUtil.set(STORAGE_KEY, '0');
     }
     return value;
   }, []);
@@ -76,7 +98,7 @@ export function UsageTracker({ propData, propState }: UsageTrackerProps) {
   const incrementUsage = () => {
     const newUsage = usage + 1;
     console.log("增加使用次数：", { oldUsage: usage, newUsage });
-    localStorage.setItem(STORAGE_KEY, newUsage.toString());
+    CookieUtil.set(STORAGE_KEY, newUsage.toString());
     setUsage(newUsage);
   };
 
