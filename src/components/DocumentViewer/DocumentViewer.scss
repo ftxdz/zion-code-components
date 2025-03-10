@@ -42,9 +42,11 @@
     }
     
     code {
-      background-color: #f5f5f5;
+      color: var(--code-color);
+      background-color: var(--code-bg-color);
       padding: 0.2em 0.4em;
       border-radius: 3px;
+      font-family: 'Consolas', 'Monaco', monospace;
     }
     
     a {
@@ -54,6 +56,14 @@
       &:hover {
         text-decoration: underline;
       }
+    }
+    
+    strong {
+      color: var(--bold-color);
+      background-color: var(--bold-bg-color);
+      font-weight: 600;
+      padding: 0 4px;
+      border-radius: 2px;
     }
   }
 } 

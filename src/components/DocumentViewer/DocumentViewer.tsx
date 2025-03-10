@@ -7,6 +7,10 @@ export interface DocumentViewerPropData {
   textColor?: string;       // 字体颜色
   linkColor?: string;       // 超链接颜色
   fontFamily?: string;      // 字体
+  boldColor?: string;       // 粗体文字颜色
+  boldBgColor?: string;     // 粗体背景颜色
+  codeColor?: string;       // 代码文字颜色
+  codeBgColor?: string;     // 代码背景颜色
 }
 export interface DocumentViewerStateData {}
 
@@ -35,6 +39,10 @@ export function DocumentViewer({ propData }: DocumentViewerProps) {
     '--font-size': propData.fontSize || '14px',
     '--link-color': propData.linkColor || '#1598FF',
     '--font-family': propData.fontFamily || 'MiSans',
+    '--bold-color': propData.boldColor || '#FFF',
+    '--bold-bg-color': propData.boldBgColor || 'transparent',
+    '--code-color': propData.codeColor || '#333',
+    '--code-bg-color': propData.codeBgColor || '#f5f5f5',
   } as React.CSSProperties;
 
   return (
