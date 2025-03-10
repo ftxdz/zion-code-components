@@ -42,7 +42,7 @@ export function DocumentViewer({ propData }: DocumentViewerProps) {
     '--bold-color': propData.boldColor || '#FFF',
     '--bold-bg-color': propData.boldBgColor || 'transparent',
     '--code-color': propData.codeColor || '#333',
-    '--code-bg-color': propData.codeBgColor || '#f5f5f5',
+    '--code-bg-color': propData.codeBgColor || 'transparent',
   } as React.CSSProperties;
 
   return (

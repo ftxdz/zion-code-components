@@ -27,8 +27,6 @@ function App() {
             textColor: "#FFFFFF",
             linkColor: "#1598FF",
             fontFamily: "MiSans",
-            boldColor: "#FF0000",
-            boldBgColor: "#FFE0E0",
             codeColor: "#c7254e",
             codeBgColor: "#f9f2f4",
           }}
